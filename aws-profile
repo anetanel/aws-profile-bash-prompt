@@ -1,15 +1,12 @@
 #! /bin/bash
 
-PROFILES=($(cat ~/.aws/config | grep '\[profile' | sed -n 's/\[profile \(.*\).*\]/\1/p' | sort))
-
+PROFILES=$(aws configure list-profiles)
+CHOICE=$1
 if [ -z "$1" ];  then
-    echo "Pass profile name as an argument. Mayhaps one of these?"
-    echo
-    printf '%s\n' "${PROFILES[@]}"
-    exit 1
+    CHOICE=$(echo "$PROFILES" | fzf )
 fi
 
-if [[ ! " ${PROFILES[@]} " =~ " ${1} " ]]; then
+if ! echo "${PROFILES}" | grep -Eq "^${CHOICE}$" ; then
     echo "Cowardly refusing to open AWS SHELL for profile $1"
     echo "No such profile in ~/.aws/profile"
     exit 1
@@ -19,4 +16,4 @@ red=`tput setaf 1`
 green=`tput setaf 2`
 reset=`tput sgr0`
 
-AWS_DEFAULT_PROFILE=$1 PS1="\[${green}\]AWS [\[${red}\]$AWS_DEFAULT_PROFILE\[${green}\]]:\[${reset}\] \w $ " bash
+AWS_DEFAULT_PROFILE=$CHOICE PS1="\[${green}\]AWS [\[${red}\]$AWS_DEFAULT_PROFILE\[${green}\]]:\[${reset}\] \w $ " bash

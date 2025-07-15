@@ -1,0 +1,13 @@
+#!/bin/bash
+# AWS Profile autocomplete
+_complete_aws_profile ()
+{
+     COMPREPLY=()
+     cur="${COMP_WORDS[COMP_CWORD]}"
+     comp_aws_profiles=`aws configure list-profiles`
+     COMPREPLY=( $(compgen -W "${comp_aws_profiles}" -- $cur))
+     return 0
+}
+
+complete -F _complete_aws_profile aws-profile
+
