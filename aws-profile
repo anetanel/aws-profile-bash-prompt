@@ -16,4 +16,4 @@ red=`tput setaf 1`
 green=`tput setaf 2`
 reset=`tput sgr0`
 
-AWS_DEFAULT_PROFILE=$CHOICE PS1="\[${green}\]AWS [\[${red}\]$AWS_DEFAULT_PROFILE\[${green}\]]:\[${reset}\] \w $ " bash
+AWS_PROFILE=$CHOICE PS1="\[${green}\]AWS [\[${red}\]$AWS_PROFILE\[${green}\]]:\[${reset}\] \w $ " bash
